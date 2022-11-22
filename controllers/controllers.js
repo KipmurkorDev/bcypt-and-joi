@@ -1,8 +1,10 @@
-const { encryptpass, comparePass } = require("../helpers/encryption")
+const { encryptpass, comparePass } = require("../helpers/encryption");
+const { validateSchema } = require("../helpers/validation");
 
 const users = [{
       name: "Jane Doe",
-      username: "janedoe@gmail.com",
+      email: "janedoe@gmail.com",
+      username: "Jenny",
       password: "$2b$08$WC5ln8bsk6CIpS5rnpf6zuvZhqcKEqTx6Wt0VIfn99CVGl6MhNkKG"
 }]
 
@@ -13,7 +15,7 @@ module.exports = {
 
       login: async (req, res) => {
             const data = req.body;
-            const user = users.find(user => user.username === data.username)
+            const user = users.find(user => user.email === data.email)
             if (user) {
                   let loggedin = await comparePass(data.password, user.password).catch(err => console.log(err))
 
@@ -29,8 +31,8 @@ module.exports = {
 
       signup: async (req, res) => {
             const data = req.body;
+
             let hashed_pass = await encryptpass(data.password)
-            
             res.send({ ...data, password: hashed_pass })
       }
 }
