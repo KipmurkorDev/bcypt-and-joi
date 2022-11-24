@@ -9,7 +9,7 @@ const users = [{
 }]
 
 module.exports = {
-      getusers: (req, res) => {
+      getusers: async (req, res) => {
             res.send(users)
       },
 
@@ -33,6 +33,7 @@ module.exports = {
             const data = req.body;
 
             let hashed_pass = await encryptpass(data.password)
+            // should be posting to users databases.
             res.send({ ...data, password: hashed_pass })
       }
 }
